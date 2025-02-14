@@ -86,12 +86,16 @@ import React, { useState, useEffect } from "react";
 function Resume() {
   const [resumeFile, setResumeFile] = useState(null);
   const [pdfPreviewUrl, setPdfPreviewUrl] = useState(null);
+  const [resumeName, setResumeName] = useState("resume.pdf"); // Store filename
 
   // Load saved file from localStorage on mount
   useEffect(() => {
     const storedResume = localStorage.getItem("resume");
+    const storedName = localStorage.getItem("resumeName");
+
     if (storedResume) {
       setPdfPreviewUrl(storedResume);
+      setResumeName(storedName || "resume.pdf"); // Default filename if not stored
     }
   }, []);
 
@@ -102,24 +106,29 @@ function Resume() {
       const url = URL.createObjectURL(file);
       setResumeFile(file);
       setPdfPreviewUrl(url);
-      localStorage.setItem("resume", url); // Save to localStorage
+      setResumeName(file.name);
+
+      // Save to localStorage
+      localStorage.setItem("resume", url);
+      localStorage.setItem("resumeName", file.name);
     } else {
       alert("Please upload a valid PDF file.");
       setResumeFile(null);
       setPdfPreviewUrl(null);
-      localStorage.removeItem("resume"); // Clear stored file if invalid
+      localStorage.removeItem("resume");
+      localStorage.removeItem("resumeName");
     }
   };
 
-  // Download the uploaded file
+  // Download the stored file
   const downloadResume = () => {
-    if (resumeFile) {
-      const url = URL.createObjectURL(resumeFile);
+    if (pdfPreviewUrl) {
       const a = document.createElement("a");
-      a.href = url;
-      a.download = resumeFile.name;
+      a.href = pdfPreviewUrl;
+      a.download = resumeName;
+      document.body.appendChild(a);
       a.click();
-      URL.revokeObjectURL(url); // Clean up the URL object
+      document.body.removeChild(a);
     }
   };
 
