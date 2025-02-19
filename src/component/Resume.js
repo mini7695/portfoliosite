@@ -119,7 +119,7 @@ function Resume() {
   useEffect(() => {
     // Simulate file upload
     const simulateFileUpload = () => {
-      fetch("/Minithasri Krishnan.pdf") // Ensure the file path is correct
+      fetch("/MiniResume.pdf") // Ensure the file path is correct
         .then((response) => {
           if (!response.ok) throw new Error("File not found");
           return response.blob();

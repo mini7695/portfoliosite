@@ -108,6 +108,11 @@
 // }
 
 // export default Footer;
+
+
+
+
+
 import React from "react";
 import { PiInstagramLogoFill } from "react-icons/pi";
 import { FaLinkedin } from "react-icons/fa6";
